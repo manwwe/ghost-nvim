@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://dotfmg.github.io/imagenes-static/img/logo_2.jpg" alt="ghost-nvim logo" width="700"/>
+  <img src="https://manwwe.github.io/imagenes-static/img/logo_2.jpg" alt="ghost-nvim logo" width="700"/>
 </div>
 
 <div align="center">
