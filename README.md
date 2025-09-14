@@ -28,9 +28,9 @@
 ---
 
 <div align="center">
-  <img src="https://dotfmg.github.io/imagenes-static/img/dashboard.png" alt="ghost-nvim dashboard preview"/>
+  <img src="https://manwwe.github.io/imagenes-static/img/dashboard.png" alt="ghost-nvim dashboard preview"/>
   <br><br>
-  <img src="https://dotfmg.github.io/imagenes-static/img/ai.png" alt="AI integration preview"/>
+  <img src="https://manwwe.github.io/imagenes-static/img/ai.png" alt="AI integration preview"/>
 </div>
 
 ---
