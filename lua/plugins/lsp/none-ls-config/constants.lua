@@ -16,11 +16,12 @@ M.tools = {
   'shellcheck',
   'npm-groovy-lint',
   'tfsec',
+  'rustfmt',
 }
 
 -- Configuration paths
 M.paths = {
-  sqlfluff_config = vim.fn.expand('~/.sqlfluff'),
+  sqlfluff_config = vim.fn.expand '~/.sqlfluff',
 }
 
 -- File type configurations

@@ -39,6 +39,7 @@ M.lsp_servers = {
   "sqls", -- SQL
   "terraformls", -- Terraform
   "gopls", -- Go
+  "rust_analyzer", -- Rust
 }
 
 -- Pyright diagnostic messages to filter

@@ -1,0 +1,20 @@
+
+# Stylua: Lua code formatter configuration.
+
+# Max line length.
+column_width = 150
+
+# Line endings: "Unix" (LF) or "Windows" (CRLF).
+line_endings = "Unix"
+
+# Indentation: "Spaces" or "Tabs".
+indent_type = "Spaces"
+
+# Number of spaces/tabs for indentation.
+indent_width = 2
+
+# String quote style: "AutoPreferSingle" or "AutoPreferDouble" or "ForceSingle" or "ForceDouble".
+quote_style = "AutoPreferSingle"
+
+# Parentheses in function calls: "None", "Always", "Remove".
+call_parentheses = "None"

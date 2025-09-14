@@ -49,6 +49,7 @@ return {
       require("plugins.lsp.servers.helm_ls")
       require("plugins.lsp.servers.bash")
       require("plugins.lsp.servers.gopls")
+      require("plugins.lsp.servers.rust")
     end,
   },
 }

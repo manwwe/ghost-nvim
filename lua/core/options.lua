@@ -11,7 +11,7 @@ vim.opt.ignorecase = true -- Ignore case in search patterns.
 vim.opt.smartcase = true -- Override ignorecase if search pattern contains uppercase letters.
 
 -- Clipboard
-vim.o.clipboard = "unnamedplus" -- Use system clipboard.
+vim.o.clipboard = 'unnamedplus' -- Use system clipboard.
 
 -- File handling & backups
 vim.o.swapfile = false -- Disable swap files.
@@ -20,27 +20,28 @@ vim.o.writebackup = false -- Disable backup before overwriting.
 vim.o.undofile = true -- Enable persistent undo.
 
 -- Runtime path
-vim.opt.runtimepath:remove("/usr/share/vim/vimfiles") -- Avoid Vim's user plugin directory conflicts.
+vim.opt.runtimepath:remove '/usr/share/vim/vimfiles' -- Avoid Vim's user plugin directory conflicts.
 
+-- vim.o.bufhide = 'wipe' -- Wipe buffer when hiding it.
 -- Special characters appearance
 vim.opt.fillchars = {
-  eob = " ",
-  vert = "│",
+  eob = ' ',
+  vert = '│',
 }
 
 vim.o.cursorline = true
 
 vim.opt.splitright = true
 
-vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("alpha_tabline", { clear = true }),
-  pattern = "alpha",
+vim.api.nvim_create_autocmd('FileType', {
+  group = vim.api.nvim_create_augroup('alpha_tabline', { clear = true }),
+  pattern = 'alpha',
   callback = function()
     vim.opt.showtabline = 0
-    vim.api.nvim_create_autocmd("BufUnload", {
+    vim.api.nvim_create_autocmd('BufUnload', {
       buffer = 0, -- Current buffer
-      group = "alpha_tabline",
-      command = "set showtabline=2",
+      group = 'alpha_tabline',
+      command = 'set showtabline=2',
     })
   end,
 })

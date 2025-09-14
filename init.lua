@@ -13,4 +13,4 @@ require 'core.system'
 require 'core.lazy-config'
 
 -- Custom Ex commands.
--- require 'core.commands'
+require 'core.commands'

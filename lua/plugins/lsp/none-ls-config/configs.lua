@@ -32,4 +32,9 @@ M.shellcheck_condition = function(utils)
   return not filename:match('%.env$') and not filename:match('%.env%.[^/]+$')
 end
 
+-- Rustfmt configuration
+M.rustfmt_config = {
+  extra_args = {"--edition", "2021"},
+}
+
 return M
