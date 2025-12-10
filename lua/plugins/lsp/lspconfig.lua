@@ -23,22 +23,22 @@ return {
 
       -- Enhance LSP capabilities for nvim-cmp
       local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+      local ok, file_ops = pcall(require, "lsp-file-operations")
+      if ok then
+        capabilities = vim.tbl_deep_extend("force", capabilities, file_ops.default_capabilities())
+      end
+
+      -- Apply defaults to every LSP config
+      vim.lsp.config("*", {
+        capabilities = capabilities,
+        on_attach = keymaps.on_attach,
+      })
 
       -- Setup Mason and Mason-LSPconfig
       require("mason").setup()
       require("mason-lspconfig").setup({
         ensure_installed = constants.lsp_servers,
-        automatic_installation = true,
-      })
-
-      -- Default handler for LSP servers
-      require("mason-lspconfig").setup_handlers({
-        function(server_name)
-          require("lspconfig")[server_name].setup({
-            capabilities = capabilities,
-            on_attach = keymaps.on_attach,
-          })
-        end,
+        automatic_installation = false,
       })
 
       -- Load server-specific configurations
@@ -50,6 +50,9 @@ return {
       require("plugins.lsp.servers.bash")
       require("plugins.lsp.servers.gopls")
       require("plugins.lsp.servers.rust")
+
+      -- Enable all configured servers
+      vim.lsp.enable(constants.lsp_servers)
     end,
   },
 }

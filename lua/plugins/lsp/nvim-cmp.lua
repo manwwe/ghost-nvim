@@ -23,7 +23,6 @@ return {
 
       local completion_sources = {
         { name = 'copilot', group_index = 1, priority = 1000 },
-        { name = 'codeium', group_index = 1, priority = 1000 },
         { name = 'nvim_lsp', group_index = 2, priority = 900 },
         { name = 'luasnip', group_index = 2, priority = 750 },
         { name = 'buffer', group_index = 3, priority = 500 },
@@ -32,7 +31,6 @@ return {
 
       local source_menu_labels = {
         copilot = '[Copilot]',
-        codeium = '[Codeium]',
         nvim_lsp = '[LSP]',
         luasnip = '[Snip]',
         buffer = '[Buf]',
@@ -121,7 +119,7 @@ return {
 
         -- Sorting configuration with AI prioritization
         sorting = {
-          priority_weight = 2,
+          priority_weight = 1,
           comparators = {
             -- AI completions first
             require('copilot_cmp.comparators').prioritize, -- Prioritize Copilot suggestions

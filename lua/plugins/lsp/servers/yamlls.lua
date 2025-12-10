@@ -1,7 +1,5 @@
 -- Configures yamlls (YAML Language Server) for YAML LSP features.
-local lspconfig = require("lspconfig")
-
-lspconfig.yamlls.setup({
+vim.lsp.config("yamlls", {
   settings = {
     yaml = {
       validate = true,

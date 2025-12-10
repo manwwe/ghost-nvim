@@ -1,8 +1,6 @@
 -- Configures Pyright (Python static type checker and language server).
 
-local lspconfig = require("lspconfig")
-
-lspconfig.pyright.setup({
+vim.lsp.config("pyright", {
   settings = {
     python = { -- Settings for Pyright.
       analysis = {

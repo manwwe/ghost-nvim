@@ -1,6 +1,4 @@
-local lspconfig = require("lspconfig")
-
-lspconfig.helm_ls.setup({
+vim.lsp.config("helm_ls", {
   filetypes = { "helm", "helmfile" },
   settings = {
     ["helm-ls"] = {

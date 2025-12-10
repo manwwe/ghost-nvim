@@ -1,16 +1,14 @@
 -- Configures Ruff (Python linter & formatter) as an LSP server (ruff-lsp).
-local lspconfig = require("lspconfig")
-
-lspconfig.ruff.setup({
+vim.lsp.config("ruff", {
   cmd = { "ruff", "server" }, -- Command to start ruff LSP.
   filetypes = { "python" },
 
   -- Configuración de capabilities para resolver el conflicto de position encoding
-  capabilities = vim.tbl_deep_extend("force", require("cmp_nvim_lsp").default_capabilities(), {
+  capabilities = {
     general = {
       positionEncodings = { "utf-16" }, -- Forzar UTF-16 para consistencia
     },
-  }),
+  },
 
   init_options = { -- Options passed to ruff-lsp on initialization.
     settings = {
@@ -39,5 +37,5 @@ lspconfig.ruff.setup({
     },
   },
 
-  -- on_attach y capabilities ya no se heredan automáticamente, se especifican arriba
+  -- on_attach se hereda de la configuración global
 })

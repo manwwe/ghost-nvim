@@ -1,8 +1,6 @@
 -- Configures rust-analyzer (Rust LSP) for Rust development.
 
-local lspconfig = require("lspconfig")
-
-lspconfig.rust_analyzer.setup({
+vim.lsp.config("rust_analyzer", {
   cmd = { "rust-analyzer" }, -- Command to start rust-analyzer.
   filetypes = { "rust" },
   settings = {
@@ -21,6 +19,4 @@ lspconfig.rust_analyzer.setup({
   flags = {
     debounce_text_changes = 150,
   },
-  root_dir = lspconfig.util.root_pattern("Cargo.toml", ".git"),
 })
-
