@@ -16,49 +16,60 @@ return {
       local keymaps = require("plugins.lsp.lsp-config.keymaps")
       local formatting = require("plugins.lsp.lsp-config.formatting")
 
-      -- Setup all LSP configurations
+      -- Setup diagnostic/highlight/formatting UI
       diagnostics.setup()
       highlights.setup()
       formatting.setup()
 
-      -- Enhance LSP capabilities for nvim-cmp
-      local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-      local ok, file_ops = pcall(require, "lsp-file-operations")
-      if ok then
-        capabilities = vim.tbl_deep_extend("force", capabilities, file_ops.default_capabilities())
+      -- Capabilities builder keeps overrides in one place
+      local function build_capabilities()
+        local caps = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+        local ok, file_ops = pcall(require, "lsp-file-operations")
+        if ok then
+          caps = vim.tbl_deep_extend("force", caps, file_ops.default_capabilities())
+        end
+        return caps
       end
 
-      -- Setup Mason and Mason-LSPconfig
-      require("mason").setup()
-      require("mason-lspconfig").setup({
-        ensure_installed = constants.lsp_servers,
-        automatic_installation = false,
-      })
-
-      -- Base options applied to every server
+      local capabilities = build_capabilities()
       local default_opts = {
         capabilities = capabilities,
         on_attach = keymaps.on_attach,
       }
 
-      -- Server-specific overrides
-      local server_opts = {
-        lua_ls = require("plugins.lsp.servers.lua"),
-        pyright = require("plugins.lsp.servers.pyright"),
-        ruff = require("plugins.lsp.servers.ruff"),
-        yamlls = require("plugins.lsp.servers.yamlls"),
-        helm_ls = require("plugins.lsp.servers.helm_ls"),
-        bashls = require("plugins.lsp.servers.bash"),
-        gopls = require("plugins.lsp.servers.gopls"),
-        rust_analyzer = require("plugins.lsp.servers.rust"),
+      -- Servers with custom options extend the defaults
+      local server_modules = {
+        lua_ls = "plugins.lsp.servers.lua",
+        pyright = "plugins.lsp.servers.pyright",
+        ruff = "plugins.lsp.servers.ruff",
+        yamlls = "plugins.lsp.servers.yamlls",
+        helm_ls = "plugins.lsp.servers.helm_ls",
+        bashls = "plugins.lsp.servers.bash",
+        gopls = "plugins.lsp.servers.gopls",
+        rust_analyzer = "plugins.lsp.servers.rust",
       }
+
+      local function configure_server(server_name)
+        local module = server_modules[server_name]
+        if not module then
+          return
+        end
+
+        local ok, opts = pcall(require, module)
+        if not ok then
+          vim.notify(string.format("[lsp] Failed to load %s: %s", module, opts), vim.log.levels.WARN)
+          return
+        end
+
+        vim.lsp.config(server_name, vim.tbl_deep_extend("force", {}, default_opts, opts or {}))
+      end
 
       -- Apply defaults to every LSP config (new API)
       vim.lsp.config("*", default_opts)
 
       -- Apply server-specific configurations
-      for server_name, opts in pairs(server_opts) do
-        vim.lsp.config(server_name, vim.tbl_deep_extend("force", {}, default_opts, opts or {}))
+      for name in pairs(server_modules) do
+        configure_server(name)
       end
 
       -- Setup Mason and Mason-LSPconfig
