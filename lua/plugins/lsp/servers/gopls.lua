@@ -1,6 +1,6 @@
 -- Configures gopls (Go Language Server) for Go LSP features.
 
-vim.lsp.config("gopls", {
+return {
   cmd = { "gopls" }, -- Command to start gopls.
   filetypes = { "go", "gomod", "gowork", "gotmpl" },
   settings = {
@@ -15,4 +15,4 @@ vim.lsp.config("gopls", {
   flags = {
     debounce_text_changes = 150,
   },
-})
+}

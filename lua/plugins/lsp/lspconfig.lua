@@ -28,12 +28,6 @@ return {
         capabilities = vim.tbl_deep_extend("force", capabilities, file_ops.default_capabilities())
       end
 
-      -- Apply defaults to every LSP config
-      vim.lsp.config("*", {
-        capabilities = capabilities,
-        on_attach = keymaps.on_attach,
-      })
-
       -- Setup Mason and Mason-LSPconfig
       require("mason").setup()
       require("mason-lspconfig").setup({
@@ -41,15 +35,38 @@ return {
         automatic_installation = false,
       })
 
-      -- Load server-specific configurations
-      require("plugins.lsp.servers.lua")
-      require("plugins.lsp.servers.pyright")
-      require("plugins.lsp.servers.ruff")
-      require("plugins.lsp.servers.yamlls")
-      require("plugins.lsp.servers.helm_ls")
-      require("plugins.lsp.servers.bash")
-      require("plugins.lsp.servers.gopls")
-      require("plugins.lsp.servers.rust")
+      -- Base options applied to every server
+      local default_opts = {
+        capabilities = capabilities,
+        on_attach = keymaps.on_attach,
+      }
+
+      -- Server-specific overrides
+      local server_opts = {
+        lua_ls = require("plugins.lsp.servers.lua"),
+        pyright = require("plugins.lsp.servers.pyright"),
+        ruff = require("plugins.lsp.servers.ruff"),
+        yamlls = require("plugins.lsp.servers.yamlls"),
+        helm_ls = require("plugins.lsp.servers.helm_ls"),
+        bashls = require("plugins.lsp.servers.bash"),
+        gopls = require("plugins.lsp.servers.gopls"),
+        rust_analyzer = require("plugins.lsp.servers.rust"),
+      }
+
+      -- Apply defaults to every LSP config (new API)
+      vim.lsp.config("*", default_opts)
+
+      -- Apply server-specific configurations
+      for server_name, opts in pairs(server_opts) do
+        vim.lsp.config(server_name, vim.tbl_deep_extend("force", {}, default_opts, opts or {}))
+      end
+
+      -- Setup Mason and Mason-LSPconfig
+      require("mason").setup()
+      require("mason-lspconfig").setup({
+        ensure_installed = constants.lsp_servers,
+        automatic_installation = false,
+      })
 
       -- Enable all configured servers
       vim.lsp.enable(constants.lsp_servers)

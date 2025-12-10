@@ -1,5 +1,5 @@
 -- Configures yamlls (YAML Language Server) for YAML LSP features.
-vim.lsp.config("yamlls", {
+return {
   settings = {
     yaml = {
       validate = true,
@@ -46,4 +46,4 @@ vim.lsp.config("yamlls", {
       },
     },
   },
-})
+}

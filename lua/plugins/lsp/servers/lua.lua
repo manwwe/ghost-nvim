@@ -1,6 +1,6 @@
 -- Configures lua-language-server (lua_ls) for Lua LSP features.
 
-vim.lsp.config("lua_ls", {
+return {
   settings = {
     Lua = {                  -- Settings for lua_ls.
       diagnostics = {
@@ -15,4 +15,4 @@ vim.lsp.config("lua_ls", {
     },
   },
   -- on_attach and capabilities are inherited from global LSP setup.
-})
+}

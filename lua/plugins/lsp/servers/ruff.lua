@@ -1,7 +1,10 @@
 -- Configures Ruff (Python linter & formatter) as an LSP server (ruff-lsp).
-vim.lsp.config("ruff", {
+local util = require("lspconfig.util")
+
+return {
   cmd = { "ruff", "server" }, -- Command to start ruff LSP.
   filetypes = { "python" },
+  root_dir = util.root_pattern("pyproject.toml", "ruff.toml", ".git"),
 
   -- Configuración de capabilities para resolver el conflicto de position encoding
   capabilities = {
@@ -38,4 +41,4 @@ vim.lsp.config("ruff", {
   },
 
   -- on_attach se hereda de la configuración global
-})
+}

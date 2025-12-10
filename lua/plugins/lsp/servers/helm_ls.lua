@@ -1,4 +1,4 @@
-vim.lsp.config("helm_ls", {
+return {
   filetypes = { "helm", "helmfile" },
   settings = {
     ["helm-ls"] = {
@@ -34,4 +34,4 @@ vim.lsp.config("helm_ls", {
       defaultNamespace = "default",
     },
   },
-})
+}

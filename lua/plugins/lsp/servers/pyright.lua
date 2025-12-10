@@ -1,6 +1,6 @@
 -- Configures Pyright (Python static type checker and language server).
 
-vim.lsp.config("pyright", {
+return {
   settings = {
     python = { -- Settings for Pyright.
       analysis = {
@@ -43,4 +43,4 @@ vim.lsp.config("pyright", {
     },
   },
   -- on_attach and capabilities are inherited from global LSP setup.
-})
+}

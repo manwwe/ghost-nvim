@@ -1,6 +1,6 @@
 -- Configures rust-analyzer (Rust LSP) for Rust development.
 
-vim.lsp.config("rust_analyzer", {
+return {
   cmd = { "rust-analyzer" }, -- Command to start rust-analyzer.
   filetypes = { "rust" },
   settings = {
@@ -19,4 +19,4 @@ vim.lsp.config("rust_analyzer", {
   flags = {
     debounce_text_changes = 150,
   },
-})
+}
