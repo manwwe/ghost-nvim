@@ -3,18 +3,19 @@
 return {
   "nvimtools/none-ls.nvim",
   dependencies = {
-    "nvimtools/none-ls-extras.nvim",                   -- Extra built-in sources for none-ls.
-    { "williamboman/mason.nvim", version = "1.11.0" }, -- Tool manager.
-    "jay-babu/mason-null-ls.nvim",                     -- Integrates Mason with none-ls.
-    "gbprod/none-ls-shellcheck.nvim",                  -- Shellcheck integration.
+    "nvimtools/none-ls-extras.nvim",                    -- Extra built-in sources for none-ls.
+    require("plugins.lsp.lsp-config.deps").mason,       -- Tool manager.
+    "jay-babu/mason-null-ls.nvim",                      -- Integrates Mason with none-ls.
+    "gbprod/none-ls-shellcheck.nvim",                   -- Shellcheck integration.
   },
   config = function()
     -- Load configuration modules
     local constants = require("plugins.lsp.none-ls-config.constants")
     local sources = require("plugins.lsp.none-ls-config.sources")
+    local deps = require("plugins.lsp.lsp-config.deps")
 
     -- Setup Mason
-    require("mason").setup()
+    deps.setup_mason()
 
     -- Setup mason-null-ls to manage tools
     require("mason-null-ls").setup({
@@ -29,4 +30,3 @@ return {
     })
   end,
 }
-

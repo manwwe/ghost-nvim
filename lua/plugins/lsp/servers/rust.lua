@@ -1,6 +1,8 @@
 -- Configures rust-analyzer (Rust LSP) for Rust development.
 
-return {
+local defaults = require("plugins.lsp.servers.defaults")
+
+return defaults.with_defaults({
   cmd = { "rust-analyzer" }, -- Command to start rust-analyzer.
   filetypes = { "rust" },
   settings = {
@@ -16,7 +18,4 @@ return {
       },
     },
   },
-  flags = {
-    debounce_text_changes = 150,
-  },
-}
+})

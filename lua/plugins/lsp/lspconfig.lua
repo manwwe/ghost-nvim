@@ -1,11 +1,13 @@
 -- LSP configuration using nvim-lspconfig and mason.nvim.
 
+local deps = require("plugins.lsp.lsp-config.deps")
+
 return {
   {
     "neovim/nvim-lspconfig",
     event = "BufReadPre", -- Load LSP early when a buffer is read.
     dependencies = {
-      { "williamboman/mason.nvim", version = "1.11.0" }, -- LSP server manager.
+      deps.mason, -- LSP server manager.
       { "williamboman/mason-lspconfig.nvim", version = "1.32.0" }, -- Mason integration with lspconfig.
     },
     config = function()
@@ -15,6 +17,7 @@ return {
       local highlights = require("plugins.lsp.lsp-config.highlights")
       local keymaps = require("plugins.lsp.lsp-config.keymaps")
       local formatting = require("plugins.lsp.lsp-config.formatting")
+      local server_registry = require("plugins.lsp.lsp-config.server_registry")
 
       -- Setup diagnostic/highlight/formatting UI
       diagnostics.setup()
@@ -37,43 +40,19 @@ return {
         on_attach = keymaps.on_attach,
       }
 
-      -- Servers with custom options extend the defaults
-      local server_modules = {
-        lua_ls = "plugins.lsp.servers.lua",
-        pyright = "plugins.lsp.servers.pyright",
-        ruff = "plugins.lsp.servers.ruff",
-        yamlls = "plugins.lsp.servers.yamlls",
-        helm_ls = "plugins.lsp.servers.helm_ls",
-        bashls = "plugins.lsp.servers.bash",
-        gopls = "plugins.lsp.servers.gopls",
-        rust_analyzer = "plugins.lsp.servers.rust",
-      }
-
-      local function configure_server(server_name)
-        local module = server_modules[server_name]
-        if not module then
-          return
-        end
-
-        local ok, opts = pcall(require, module)
-        if not ok then
-          vim.notify(string.format("[lsp] Failed to load %s: %s", module, opts), vim.log.levels.WARN)
-          return
-        end
-
-        vim.lsp.config(server_name, vim.tbl_deep_extend("force", {}, default_opts, opts or {}))
-      end
-
       -- Apply defaults to every LSP config (new API)
       vim.lsp.config("*", default_opts)
 
       -- Apply server-specific configurations
-      for name in pairs(server_modules) do
-        configure_server(name)
+      for _, name in ipairs(server_registry.names()) do
+        local opts = server_registry.get(name)
+        if opts then
+          vim.lsp.config(name, vim.tbl_deep_extend("force", {}, default_opts, opts))
+        end
       end
 
       -- Setup Mason and Mason-LSPconfig
-      require("mason").setup()
+      deps.setup_mason()
       require("mason-lspconfig").setup({
         ensure_installed = constants.lsp_servers,
         automatic_installation = false,
