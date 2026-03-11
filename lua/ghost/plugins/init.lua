@@ -3,5 +3,5 @@
 
 return {
   { import = "ghost.plugins.lsp" },
-  --{ import = "ghost.plugins.treesitter" },
+  { import = "ghost.plugins.treesitter" },
 }
