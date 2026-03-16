@@ -64,7 +64,7 @@ return {
             end,
           },
         },
-        lualine_c = {},
+        lualine_c = { { "filename" } },
         lualine_x = {
           {
             "diagnostics",
