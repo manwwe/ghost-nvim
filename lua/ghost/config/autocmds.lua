@@ -1,18 +1,14 @@
--- autocmds.lua
--- Automatic behaviors triggered by Neovim events.
--- Requires Neovim >= 0.11
+-- Configures custom Neovim autocommands.
 
 local autocmd = vim.api.nvim_create_autocmd
 
--- Highlight yanked text briefly after copying
 autocmd("TextYankPost", {
   desc = "Highlight yanked text",
   callback = function()
-    vim.highlight.on_yank({ higroup = "IncSearch", timeout = 150 })
+    vim.highlight.on_yank { higroup = "IncSearch", timeout = 150 }
   end,
 })
 
--- Restore cursor position when reopening a file
 autocmd("BufReadPost", {
   desc = "Restore cursor position on file open",
   callback = function()
@@ -23,18 +19,16 @@ autocmd("BufReadPost", {
   end,
 })
 
--- Remove trailing whitespace on save
 autocmd("BufWritePre", {
   desc = "Remove trailing whitespace on save",
   pattern = "*",
   callback = function()
     local pos = vim.api.nvim_win_get_cursor(0)
-    vim.cmd([[%s/\s\+$//e]])
+    vim.cmd [[%s/\s\+$//e]]
     vim.api.nvim_win_set_cursor(0, pos)
   end,
 })
 
--- Close special buffers with q
 autocmd("FileType", {
   desc = "Close special buffers with q",
   pattern = { "help", "qf", "notify", "lspinfo", "man" },
@@ -43,10 +37,9 @@ autocmd("FileType", {
   end,
 })
 
--- Auto resize splits when Neovim window is resized
 autocmd("VimResized", {
   desc = "Auto resize splits on window resize",
   callback = function()
-    vim.cmd("tabdo wincmd =")
+    vim.cmd "tabdo wincmd ="
   end,
 })

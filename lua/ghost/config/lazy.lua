@@ -1,42 +1,34 @@
--- Configures lazy.nvim plugin manager.
--- Handles installation and setup of all other plugins.
+-- Configures lazy.nvim and plugin loading.
 
--- Installation path for lazy.nvim.
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
--- Clone lazy.nvim if not already installed.
 if not vim.loop.fs_stat(lazypath) then
-    vim.fn.system({ -- System command to clone.
+    vim.fn.system({
         "git",
         "clone",
-        "--filter=blob:none", -- Optimized clone.
-        "--branch=stable", -- Use stable branch.
+        "--filter=blob:none",
+        "--branch=stable",
         "https://github.com/folke/lazy.nvim.git",
         lazypath,
     })
 end
--- Add lazy.nvim to runtime path (rtp) for Neovim to find it.
 vim.opt.rtp:prepend(lazypath)
 
--- Initialize lazy.nvim with plugin specifications and options.
 require("lazy").setup(
--- List of plugin specifications (imported from 'plugins' directory).
     {
-        { import = 'ghost.plugins' }, -- General
-        -- { import = "plugins.lsp" },    -- LSP
+        { import = 'ghost.plugins' },
+        { import = "ghost.plugins.lsp" },
 
     },
-    -- Global configuration for lazy.nvim.
     {
         change_detection = {
-            notify = false, -- Disable notifications for config file changes.
+            notify = false,
         },
         install = {
             colorschema = { "" },
         },
         performance = {
             rtp = {
-                -- Disable unused built-in Neovim plugins for faster startup.
                 disabled_plugins = {
                     "gzip",
                     "matchit",
@@ -49,9 +41,9 @@ require("lazy").setup(
                 },
             },
         },
-        ui = {            -- UI for the lazy.nvim interface.
-            border = "rounded", -- Rounded borders.
-            wrap = true,  -- Wrap long lines in plugin list.
+        ui = {
+            border = "rounded",
+            wrap = true,
         },
     }
 )

@@ -1,3 +1,5 @@
+-- Configures the lualine statusline.
+
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = {
@@ -6,7 +8,7 @@ return {
   config = function()
     require("lualine").setup {
       options = {
-        theme = "nord",
+        theme = "auto",
         globalstatus = true,
         component_separators = { left = "", right = "" },
         section_separators = { left = "", right = "" },
@@ -49,27 +51,41 @@ return {
           {
             "diff",
             symbols = { added = " ", modified = " ", removed = " " },
+            separator = { right = "" },
             fmt = function(str)
               local ahead = vim.fn.system("git rev-list @{u}..HEAD --count 2>/dev/null"):gsub("\n", "")
               local behind = vim.fn.system("git rev-list HEAD..@{u} --count 2>/dev/null"):gsub("\n", "")
 
               local result = str
               if tonumber(ahead) and tonumber(ahead) > 0 then
-                result = result .. " " .. ahead -- commits para pushear
+                result = result .. "  " .. ahead
               end
               if tonumber(behind) and tonumber(behind) > 0 then
-                result = result .. " " .. behind -- commits para pullear
+                result = result .. "  " .. behind
               end
               return result
             end,
           },
         },
-        lualine_c = { { "filename" } },
+        lualine_c = {
+          {
+            "filename",
+            color = function()
+              if vim.bo.modified then
+                return { fg = "#ffaa88", gui = "bold" }
+              end
+              return { gui = "bold" }
+            end,
+            on_click = function()
+              vim.cmd "Telescope find_files"
+            end,
+          },
+        },
         lualine_x = {
           {
             "diagnostics",
             sources = { "nvim_lsp" },
-            symbols = { error = " ", warn = " ", hint = " ", info = " " },
+            symbols = { error = " ", warn = " ", hint = " ", info = " " },
           },
           {
             function()
