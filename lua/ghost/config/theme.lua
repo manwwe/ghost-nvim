@@ -6,6 +6,8 @@ local default_theme = "catppuccin"
 local available_themes = {
   "catppuccin",
   "gruvbox",
+  "gruvbox-material",
+  "nord",
   "tokyonight",
   "kanagawa",
   "vague",
