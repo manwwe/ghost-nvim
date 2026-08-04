@@ -1,15 +1,31 @@
 -- Configures toggleterm terminals and runners.
 
 local file_runners = {}
-local cmd_map = {
-  python = "python3",
-  lua = "lua",
-  sh = "bash",
-}
+local runner_specs = {
+  c = function(file)
+    local binary = vim.fn.tempname()
+    local source = vim.fn.shellescape(file)
+    local target = vim.fn.shellescape(binary)
 
-local function runner_command(interpreter, file)
-  return interpreter .. " " .. vim.fn.shellescape(file)
-end
+    return string.format("cc -Wall -Wextra -pedantic -std=c11 %s -o %s && %s", source, target, target)
+  end,
+  cpp = function(file)
+    local binary = vim.fn.tempname()
+    local source = vim.fn.shellescape(file)
+    local target = vim.fn.shellescape(binary)
+
+    return string.format("c++ -Wall -Wextra -pedantic -std=c++20 %s -o %s && %s", source, target, target)
+  end,
+  lua = function(file)
+    return "lua " .. vim.fn.shellescape(file)
+  end,
+  python = function(file)
+    return "python3 " .. vim.fn.shellescape(file)
+  end,
+  sh = function(file)
+    return "bash " .. vim.fn.shellescape(file)
+  end,
+}
 
 local function reset_runner(file)
   local term = file_runners[file]
@@ -24,9 +40,9 @@ end
 
 local function run_current_file()
   local ft = vim.bo.filetype
-  local interp = cmd_map[ft]
+  local build_command = runner_specs[ft]
 
-  if not interp then
+  if not build_command then
     vim.notify("Unsupported filetype for execution: " .. ft, vim.log.levels.WARN)
     return
   end
@@ -36,7 +52,7 @@ local function run_current_file()
   end
 
   local file = vim.fn.expand "%:p"
-  local cmd = runner_command(interp, file)
+  local cmd = build_command(file)
   local display_name = vim.fn.fnamemodify(file, ":t")
 
   reset_runner(file)

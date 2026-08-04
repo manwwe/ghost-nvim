@@ -4,7 +4,10 @@ local M = {}
 
 M.parsers = {
   "bash",
+  "c",
+  "cmake",
   "css",
+  "cpp",
   "html",
   "javascript",
   "json",
