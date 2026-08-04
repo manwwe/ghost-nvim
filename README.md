@@ -50,11 +50,14 @@
 - 🧠 **Modern LSP Tooling**
   `mason.nvim`, `nvim-lspconfig`, `conform.nvim`, and `nvim-lint` provide language servers, format-on-save, and lint feedback with minimal setup.
 
+- ⚙️ **C and C++ Ready**
+  `clangd`, `clang-format`, `clang-tidy`, Treesitter parsers, and a compile-and-run terminal flow are wired in for single-file C and C++ work.
+
 - 🔍 **Practical Navigation**
   `telescope.nvim` covers files, grep, buffers, diagnostics, and keymaps, while `neo-tree.nvim` provides a floating explorer for files, buffers, and Git status.
 
 - 🎨 **Modern UI Stack**
-  Includes `alpha-nvim`, `lualine.nvim`, `bufferline.nvim`, `noice.nvim`, and multiple bundled themes such as Catppuccin, Gruvbox, TokyoNight, Kanagawa, Vague, and Everforest.
+  Includes `alpha-nvim`, `lualine.nvim`, `bufferline.nvim`, `noice.nvim`, and multiple bundled themes such as Catppuccin, Gruvbox, Gruvbox Material, Nord, TokyoNight, Kanagawa, Vague, and Everforest.
 
 - 🛠️ **Full Daily Driver Toolkit**
   Ships with terminals, Git tooling, diagnostics views, snippets, autopairs, code snapshots, and multicursor editing.
@@ -83,6 +86,8 @@ Install the following dependencies:
 Optional but useful:
 
 - `python3`, `lua`, and `bash` for the file runner in `toggleterm`
+- `cc` and `c++` for compiling C and C++ with `<leader>tr`
+- `clang-tidy` if you want C/C++ linting from `nvim-lint`
 - an active GitHub Copilot subscription if you want to use `CopilotChat.nvim`
 
 ---
@@ -158,7 +163,7 @@ Optional but useful:
 - LSP servers are managed through Mason and enabled with `nvim-lspconfig`.
 - Formatting runs on save through `conform.nvim`, with manual formatting on `<leader>fm`.
 - Linting runs on buffer enter, write, and insert leave through `nvim-lint`.
-- Default language tooling includes `lua_ls`, `pyright`, `rust_analyzer`, and `ts_ls`.
+- Default language tooling includes `clangd`, `lua_ls`, `pyright`, `rust_analyzer`, and `ts_ls`.
 
 #### 🌈 UI/UX
 
@@ -170,7 +175,9 @@ Optional but useful:
 
 #### 🧩 Tools
 
-- `toggleterm.nvim` provides a main terminal, floating terminal, vertical terminal, and a current-file runner for `python`, `lua`, and `sh`.
+- `toggleterm.nvim` provides a main terminal, floating terminal, vertical terminal, and a current-file runner for `c`, `cpp`, `python`, `lua`, and `sh`.
+- For C and C++, `<leader>tr` compiles the current file with `cc` or `c++` and runs the resulting binary in a floating terminal.
+- `clang-tidy` diagnostics for C and C++ are triggered automatically when a project provides `compile_commands.json` or `compile_flags.txt`.
 - Git flows are covered by `gitsigns.nvim` and `lazygit.nvim`.
 - `trouble.nvim`, `which-key.nvim`, `mini.surround`, `nvim-autopairs`, `codesnap.nvim`, and `multicursor.nvim` round out the daily editing workflow.
 
@@ -224,6 +231,7 @@ Contributions should follow the refactored layout used by this branch and keep d
 ├── init.lua
 ├── KEYMAPS.md
 ├── lsp
+│   ├── clangd.lua
 │   ├── lua_ls.lua
 │   ├── pyright.lua
 │   ├── rust_analyzer.lua
@@ -267,5 +275,6 @@ Contributions should follow the refactored layout used by this branch and keep d
 ## Notes
 
 - `nvim-treesitter` is pinned to `master` for compatibility with Neovim `0.11.x`.
+- For richer C/C++ diagnostics in real projects, generate a `compile_commands.json` file, for example with `cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS=ON`.
 - `CopilotChat.nvim` is an optional integration and requires GitHub Copilot access.
 - The refactor branch intentionally favors small, focused modules over a monolithic config layout.

@@ -5,6 +5,7 @@ local prettier = { "prettier" }
 local eslint = { "eslint_d" }
 
 M.lsp_servers = {
+  "clangd",
   "lua_ls",
   "pyright",
   "rust_analyzer",
@@ -14,6 +15,7 @@ M.lsp_servers = {
 M.enabled_lsp_servers = vim.deepcopy(M.lsp_servers)
 
 M.mason_tools = {
+  "clang-format",
   "eslint_d",
   "prettier",
   "ruff",
@@ -22,6 +24,8 @@ M.mason_tools = {
 }
 
 M.formatters_by_ft = {
+  c = { "clang_format" },
+  cpp = { "clang_format" },
   javascript = prettier,
   javascriptreact = prettier,
   json = prettier,
@@ -36,6 +40,8 @@ M.formatters_by_ft = {
 }
 
 M.linters_by_ft = {
+  c = { "clangtidy" },
+  cpp = { "clangtidy" },
   javascript = eslint,
   javascriptreact = eslint,
   python = { "ruff" },

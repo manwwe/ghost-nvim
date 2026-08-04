@@ -18,6 +18,11 @@ return {
   },
   opts = {
     formatters_by_ft = require("ghost.config.lang_tools").formatters_by_ft,
+    formatters = {
+      ruff_format = {
+        append_args = { "--line-length", "120" },
+      },
+    },
     format_on_save = {
       timeout_ms = 2000,
       lsp_format = "fallback",
