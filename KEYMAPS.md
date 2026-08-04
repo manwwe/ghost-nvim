@@ -41,7 +41,6 @@ Main mappings live in `lua/ghost/config/keymaps.lua`, with plugin-specific mappi
 | `<leader>uw` | Toggle wrap |
 | `<leader>sa` | Select entire buffer |
 | `jj` | Exit insert/terminal mode |
-
 ## Telescope
 
 | Key | Action |
@@ -100,7 +99,7 @@ Main mappings live in `lua/ghost/config/keymaps.lua`, with plugin-specific mappi
 | `<C-/>` | Toggle terminal |
 | `<leader>tf` | Floating terminal |
 | `<leader>tv` | Vertical terminal |
-| `<leader>tr` | Run current file |
+| `<leader>tr` | Run current file or compile and run C/C++ |
 
 ## Trouble
 
