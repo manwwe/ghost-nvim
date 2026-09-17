@@ -9,6 +9,7 @@ M.lsp_servers = {
   "lua_ls",
   "pyright",
   "rust_analyzer",
+  "terraformls",
   "ts_ls",
 }
 
@@ -33,6 +34,8 @@ M.formatters_by_ft = {
   markdown = prettier,
   python = { "ruff_format" },
   rust = { "rustfmt" },
+  terraform = { "terraform_fmt" },
+  ["terraform-vars"] = { "terraform_fmt" },
   toml = { "taplo" },
   typescript = prettier,
   typescriptreact = prettier,

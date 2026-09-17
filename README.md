@@ -81,6 +81,7 @@ Install the following dependencies:
 - a C compiler
 - `ripgrep`
 - `make` for `telescope-fzf-native.nvim`
+- `terraform` for formatting Terraform files with `terraform fmt`
 - Nerd Font for icons
 
 Optional but useful:
@@ -163,7 +164,7 @@ Optional but useful:
 - LSP servers are managed through Mason and enabled with `nvim-lspconfig`.
 - Formatting runs on save through `conform.nvim`, with manual formatting on `<leader>fm`.
 - Linting runs on buffer enter, write, and insert leave through `nvim-lint`.
-- Default language tooling includes `clangd`, `lua_ls`, `pyright`, `rust_analyzer`, and `ts_ls`.
+- Default language tooling includes `clangd`, `lua_ls`, `pyright`, `rust_analyzer`, `terraformls`, and `ts_ls`.
 
 #### 🌈 UI/UX
 
