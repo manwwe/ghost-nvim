@@ -122,6 +122,21 @@ if booted then
     assert(ft.lua[1] == "stylua" and ft.cpp[1] == "clang-format" and ft.sh[1] == "shfmt")
   end)
 
+  test("Rust uses Clippy and shell scripts lint after saving", function()
+    assert(opts("nvim-lspconfig").servers.rust_analyzer.settings["rust-analyzer"].check.command == "clippy")
+    require("lazy").load({ plugins = { "nvim-lint" } })
+    local lint = require("lint")
+    assert(lint.linters_by_ft.sh[1] == "shellcheck")
+    assert(not lint.linters_by_ft.python and not lint.linters_by_ft.cpp and not lint.linters_by_ft.rust)
+    -- Exercise the save trigger without requiring an external executable in the suite.
+    local original = lint.try_lint
+    local called = false
+    lint.try_lint = function() called = true end
+    vim.api.nvim_exec_autocmds("BufWritePost", { group = "ghost_lint", buffer = 0 })
+    lint.try_lint = original
+    assert(called, "Saving should trigger linting")
+  end)
+
   test("completion requires explicit selection", function()
     local c = require("blink.cmp.config")
     assert(not c.completion.list.selection.preselect({}))
