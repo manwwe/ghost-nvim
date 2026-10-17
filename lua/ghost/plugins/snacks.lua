@@ -3,6 +3,14 @@ return {
     priority = 1000,
     lazy = false,
     keys = {
+        { "<C-/>", function() Snacks.terminal.toggle(nil, { count = 1 }) end, desc = "Toggle terminal", mode = { "n", "t" } },
+        { "<C-_>", function() Snacks.terminal.toggle(nil, { count = 1 }) end, desc = "Toggle terminal", mode = { "n", "t" } },
+        { "<leader>tt", function() Snacks.terminal.toggle(nil, { count = 1 }) end, desc = "Toggle terminal" },
+        { "<leader>tf", function() Snacks.terminal.toggle(nil, { count = 2, win = { position = "float", border = "rounded", wo = { winhighlight = "FloatBorder:GhostTerminalBorder" } } }) end, desc = "Toggle floating terminal" },
+        { "<leader>tl", function() Snacks.terminal.toggle(nil, { count = 3, win = { position = "left" } }) end, desc = "Toggle left terminal" },
+        { "<leader>tr", function() require("ghost.config.runner").run() end, desc = "Run current file" },
+        { "<leader>tc", function() require("ghost.config.runner").run({ collect_input = true }) end, desc = "Run with collected input" },
+        { "<leader>tv", function() Snacks.terminal.toggle(nil, { count = 4, win = { position = "right", width = 80 } }) end, desc = "Open vertical terminal" },
         { "<leader>bo", function() Snacks.bufdelete.other() end, desc = "Delete other buffers" },
         { "<leader>bi", function() Snacks.bufdelete.invisible() end, desc = "Delete invisible buffers" },
         { "<leader>gg", function() Snacks.lazygit() end, desc = "LazyGit" },
@@ -30,6 +38,7 @@ return {
         },
     },
     opts = {
+        terminal = {},
         lazygit = { enabled = true },
         bigfile = { enabled = true },
         explorer = { enabled = true },
@@ -42,6 +51,14 @@ return {
     config = function(_, opts)
         local snacks = require("snacks")
         snacks.setup(opts)
+        local function terminal_highlights()
+            vim.api.nvim_set_hl(0, "GhostTerminalBorder", { fg = "#88C0D0" })
+        end
+        terminal_highlights()
+        vim.api.nvim_create_autocmd("ColorScheme", {
+            group = vim.api.nvim_create_augroup("ghost_terminal_highlights", { clear = true }),
+            callback = terminal_highlights,
+        })
         local pickers = {
             "files", "grep", "grep_word", "lines", "grep_buffers", "buffers",
             "recent", "help", "keymaps", "diagnostics", "pickers", "resume",

@@ -11,6 +11,7 @@ return {
             { "<leader>f", group = "find / files" },
             { "<leader>g", group = "git" },
             { "<leader>q", group = "quit" },
+            { "<leader>t", group = "terminal", icon = " " },
             { "<leader>w", group = "windows" },
             { "<leader>u", group = "ui" },
             { "<leader>x", group = "lists" },
