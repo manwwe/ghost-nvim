@@ -12,7 +12,7 @@ return {
             globalstatus = true,
             component_separators = { left = "", right = "" },
             section_separators = { left = "", right = "" },
-            disabled_filetypes = { statusline = { "alpha", "neo-tree" } },
+            disabled_filetypes = { statusline = { "alpha" } },
         },
         sections = {
             lualine_a = {

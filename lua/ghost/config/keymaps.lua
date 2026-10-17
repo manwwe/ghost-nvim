@@ -11,20 +11,20 @@ local function map(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, vim.tbl_extend("force", { silent = true }, opts or {}))
 end
 
--- Save
-map({ "n", "v" }, "<leader>w", "<cmd>w<CR><cmd>echo 'File Saved! 💾'<CR>", "Save file")
-map("n", "<leader>W", "<cmd>noautocmd w<CR>", "Save without formatting")
+-- Files
+map("n", "<leader>fn", "<cmd>enew<CR>", "New file")
+map({ "n", "v" }, "<leader>fs", "<cmd>w<CR><cmd>echo 'File Saved! 💾'<CR>", "Save file")
+map("n", "<leader>fS", "<cmd>noautocmd w<CR>", "Save without formatting")
 
 -- Quit
-map("n", "<leader>qq", "<cmd>q<CR>", "Quit window")
-map("n", "<leader>qa", "<cmd>qa<CR>", "Quit all")
+map("n", "<leader>qq", "<cmd>qa<CR>", "Quit all")
 
 -- Exit insert and terminal modes
 map("i", "jj", "<Esc>", "Exit insert mode")
 map("t", "jj", [[<C-\><C-n>]], "Exit terminal mode")
 
 -- Select all
-map("n", "<leader>sa", "ggVG", "Select entire buffer")
+map("n", "<leader>ba", "ggVG", "Select entire buffer")
 
 -- Move by screen rows unless a count is given
 map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
@@ -95,10 +95,15 @@ map("n", "<leader>bD", "<cmd>bdelete<CR>", "Delete buffer and window")
 map("n", "<leader>bn", "<cmd>enew<CR>", "New buffer")
 
 -- Splits
-map("n", "<leader>sv", "<C-w>v", "Split vertical")
-map("n", "<leader>sh", "<C-w>s", "Split horizontal")
-map("n", "<leader>se", "<C-w>=", "Equalize splits")
-map("n", "<leader>sx", "<cmd>close<CR>", "Close split")
+map("n", "<leader>wv", "<C-w>v", "Split vertical")
+map("n", "<leader>ws", "<C-w>s", "Split horizontal")
+map("n", "<leader>w=", "<C-w>=", "Equalize splits")
+map("n", "<leader>wc", "<cmd>close<CR>", "Close split")
+
+map("n", "<leader>wo", "<cmd>only<CR>", "Close other windows")
+for key, direction in pairs({ h = "left", j = "below", k = "above", l = "right" }) do
+    map("n", "<leader>w" .. key, "<C-w>" .. key, "Focus " .. direction .. " window")
+end
 
 -- Navigate windows using <ctrl> hjkl keys
 map("n", "<C-h>", "<C-w>h", "Focus left window")
@@ -110,11 +115,11 @@ map("t", "<C-j>", [[<C-\><C-n><cmd>wincmd j<CR>]], "Focus below window")
 map("t", "<C-k>", [[<C-\><C-n><cmd>wincmd k<CR>]], "Focus above window")
 map("t", "<C-l>", [[<C-\><C-n><cmd>wincmd l<CR>]], "Focus right window")
 
--- Resize window using <leader> arrow keys
-map("n", "<leader><Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
-map("n", "<leader><Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
-map("n", "<leader><Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })
-map("n", "<leader><Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
+-- Resize windows using <leader>w and arrow keys
+map("n", "<leader>w<Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
+map("n", "<leader>w<Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
+map("n", "<leader>w<Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })
+map("n", "<leader>w<Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
 
 -- Adjust indentation and keep the selection
 map("v", "<", "<gv", "Unindent")
@@ -127,11 +132,6 @@ map(
     "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
     { desc = "Redraw / Clear hlsearch / Diff Update" }
 )
-map("n", "<localleader>uw", "<cmd>set wrap!<CR>", "Toggle line wrap")
-map("n", "<localleader>un", function()
-    vim.opt.relativenumber = not vim.opt.relativenumber:get()
-end, "Toggle relative numbers")
-
 -- Move selected lines
 map("v", "J", ":m '>+1<CR>gv=gv", "Move line down")
 map("v", "K", ":m '<-2<CR>gv=gv", "Move line up")

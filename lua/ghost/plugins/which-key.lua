@@ -8,10 +8,10 @@ return {
         spec = {
             { "<leader>b", group = "buffers" },
             { "<leader>c", group = "code" },
-            { "<leader>f", group = "find" },
+            { "<leader>f", group = "find / files" },
             { "<leader>g", group = "git" },
             { "<leader>q", group = "quit" },
-            { "<leader>s", group = "splits" },
+            { "<leader>w", group = "windows" },
             { "<leader>u", group = "ui" },
             { "<leader>x", group = "lists" },
         },

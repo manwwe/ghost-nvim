@@ -41,14 +41,32 @@ return {
         },
     },
     opts = {
+        event_handlers = {
+            {
+                event = "file_opened",
+                handler = function()
+                    require("neo-tree.command").execute({ action = "close" })
+                end,
+            },
+        },
         close_if_last_window = true,
         enable_diagnostics = false,
         sources = { "filesystem", "buffers", "git_status" },
         open_files_do_not_replace_types = { "terminal", "qf" },
         filesystem = {
+            components = {
+                name = function(config, node, state)
+                    local component = require("neo-tree.sources.common.components").name(config, node, state)
+                    if node:get_depth() == 1 then
+                        component.text = vim.fn.fnamemodify(node:get_id(), ":t")
+                    end
+                    return component
+                end,
+            },
             filtered_items = {
                 show_hidden_count = false,
                 hide_dotfiles = false,
+                hide_gitignored = false,
                 hide_by_name = {
                     ".DS_Store",
                     "thumbs.db",
