@@ -32,7 +32,9 @@ vim.opt.fillchars = { -- UI fill characters
     diff = "╱", -- Diff filler
     eob = " ", -- Hide end-of-buffer tildes
 }
-vim.opt.showmode = true -- Show mode indicator
+vim.opt.showmode = false -- Mode is shown in lualine
+vim.opt.laststatus = 2 -- Show statusline
+vim.opt.ruler = false -- Hide cursor position
 vim.opt.splitright = true -- Split to the right
 vim.opt.splitbelow = true -- Split below
 vim.opt.splitkeep = "screen" -- Keep text steady when splitting
@@ -42,3 +44,4 @@ vim.opt.shiftround = true -- Round indentation to a full level
 vim.opt.expandtab = true -- Use spaces for tabs
 vim.opt.smartindent = true -- Smart auto-indent
 vim.opt.virtualedit = "block" -- Select beyond line endings in block mode
+vim.opt.showtabline = 0 -- Hide the tab bar

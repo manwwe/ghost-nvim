@@ -1,6 +1,11 @@
 -- Integration tests against the installed plugins; no downloads or server processes.
 local root = assert(vim.env.GHOST_TEST_ROOT)
 local scratch = assert(vim.env.GHOST_TEST_TMP)
+-- Write directly so UI plugins cannot capture test results as notifications.
+local function print(message)
+  io.stdout:write(tostring(message), "\n")
+  io.stdout:flush()
+end
 local failures, passed = {}, 0
 local function test(name, fn)
   local ok, err = xpcall(fn, debug.traceback)
@@ -122,6 +127,11 @@ if booted then
     assert(not c.completion.list.selection.preselect({}))
     assert(not c.completion.list.selection.auto_insert({}))
     assert(c.keymap["<Tab>"][1] == "accept" and c.keymap["<CR>"][1] == "accept")
+  end)
+
+  test("mini.diff loads before its overlay shortcut is invoked", function()
+    assert(config.plugins["mini.diff"].lazy == false, "Key-only loading races buffer attachment")
+    assert(package.loaded["mini.diff"], "mini.diff must already be initialized at startup")
   end)
 
   test("diagnostics retain inline messages and severity icons", function()
