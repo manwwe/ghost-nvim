@@ -20,6 +20,7 @@ require("lazy").setup({
     { import = "ghost.plugins" },
     { import = "ghost.plugins.lsp" },
     { import = "ghost.plugins.lang" },
+    { import = "ghost.plugins.theme" },
   },
   install = { colorscheme = { "habamax" } },
   checker = { enabled = true, notify = false },
