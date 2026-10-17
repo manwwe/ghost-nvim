@@ -1,5 +1,15 @@
 # Configuration tests
 
+GitHub Actions runs this suite on pushes to `main`. It can also be started
+manually from the Actions tab. The Linux job installs Neovim 0.12.6 and plugin
+sources with `tests/install.lua` before running `tests/run.sh`.
+
+The CI installer skips plugin callbacks and build hooks. No Copilot credentials,
+language toolchains, or parser builds are needed for these configuration checks.
+It follows the plugin versions declared in the configuration, so upstream plugin
+changes can affect subsequent runs. It does not test macOS UI behavior or the
+machine-specific C/C++ runners.
+
 Run from the repository:
 
 ```sh

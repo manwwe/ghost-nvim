@@ -1,0 +1,30 @@
+name: Configuration tests
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: config-tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Neovim 0.12
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install Neovim
+        uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: v0.12.6
+      - name: Install plugin sources
+        run: nvim --headless -u NONE -i NONE -n -l tests/install.lua
+      - name: Run configuration tests
+        run: ./tests/run.sh

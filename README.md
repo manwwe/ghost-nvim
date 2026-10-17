@@ -207,6 +207,9 @@ the current project.
 
 ## Tests
 
+GitHub Actions runs the configuration suite on every push to `main`. You can
+also start it manually from the repository's Actions tab.
+
 After installing the plugins, run from the repository:
 
 ```sh
