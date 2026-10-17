@@ -41,6 +41,21 @@ return {
         },
     },
     opts = {
+        default_component_configs = {
+            git_status = {
+                symbols = {
+                    added = "✚",
+                    modified = "",
+                    deleted = "✖",
+                    renamed = "󰁕",
+                    untracked = "?",
+                    ignored = "",
+                    unstaged = "○",
+                    staged = "✓",
+                    conflict = "",
+                },
+            },
+        },
         event_handlers = {
             {
                 event = "file_opened",

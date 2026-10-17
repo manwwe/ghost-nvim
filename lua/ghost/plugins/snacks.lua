@@ -51,6 +51,15 @@ return {
     config = function(_, opts)
         local snacks = require("snacks")
         snacks.setup(opts)
+        snacks.toggle({
+            name = "Copilot",
+            get = function() return vim.g.copilot_enabled == true end,
+            set = function(state)
+                vim.g.copilot_enabled = state
+                vim.cmd(state and "Copilot enable" or "Copilot disable")
+                if package.loaded["lualine"] then require("lualine").refresh() end
+            end,
+        }):map("<leader>ua")
         local function terminal_highlights()
             vim.api.nvim_set_hl(0, "GhostTerminalBorder", { fg = "#88C0D0" })
         end

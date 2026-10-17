@@ -110,7 +110,7 @@ if booted then
   end
 
   test("language specs preserve servers, parsers, and formatters", function()
-    for _, name in ipairs({ "lua_ls", "pyright", "ruff", "rust_analyzer", "clangd", "ts_ls", "terraformls" }) do
+    for _, name in ipairs({ "lua_ls", "pyright", "ruff", "rust_analyzer", "clangd", "ts_ls", "terraformls", "eslint" }) do
       assert(vim.tbl_contains(requested_servers, name), "Missing server " .. name)
       assert(vim.lsp.config[name], "Missing config " .. name)
     end
@@ -120,6 +120,14 @@ if booted then
     end
     local ft = opts("conform.nvim").formatters_by_ft
     assert(ft.lua[1] == "stylua" and ft.cpp[1] == "clang-format" and ft.sh[1] == "shfmt")
+  end)
+
+  test("Prettier formats web files and ESLint supplies linting", function()
+    local ft = opts("conform.nvim").formatters_by_ft
+    for _, name in ipairs({ "javascript", "typescript", "json", "markdown", "yaml", "html", "css" }) do
+      assert(ft[name][1] == "prettier", "Missing Prettier for " .. name)
+    end
+    assert(opts("nvim-lspconfig").servers.eslint.settings.format == false)
   end)
 
   test("Rust uses Clippy and shell scripts lint after saving", function()
@@ -135,6 +143,18 @@ if booted then
     vim.api.nvim_exec_autocmds("BufWritePost", { group = "ghost_lint", buffer = 0 })
     lint.try_lint = original
     assert(called, "Saving should trigger linting")
+  end)
+
+  test("Copilot stays off until explicitly enabled", function()
+    assert(vim.g.copilot_enabled == false)
+    assert(not package.loaded["copilot"], "Copilot must not start at launch")
+    local copilot = opts("copilot.lua")
+    assert(not copilot.suggestion.enabled and not copilot.panel.enabled)
+    local provider = opts("blink.cmp").sources.providers.copilot
+    assert(provider.module == "blink-copilot" and not provider.enabled())
+    assert(not copilot.should_attach(0), "Disabled Copilot must not attach")
+    local toggle = require("snacks").toggle.get("copilot")
+    assert(toggle and not toggle:get())
   end)
 
   test("completion requires explicit selection", function()

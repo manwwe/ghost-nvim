@@ -66,6 +66,7 @@ return {
             lualine_x = {
                 {
                     function()
+                        if not vim.g.copilot_enabled then return " " end
                         for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0, name = "copilot" })) do
                             if client.initialized then
                                 return " " -- Connected
@@ -74,6 +75,7 @@ return {
                         return " " -- Inactive
                     end,
                     color = function()
+                        if not vim.g.copilot_enabled then return { fg = "#859289" } end
                         for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0, name = "copilot" })) do
                             if client.initialized then
                                 return { fg = "#a7c080" } -- Connected

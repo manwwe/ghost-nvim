@@ -1,8 +1,19 @@
 return {
     "saghen/blink.cmp",
-    dependencies = { "rafamadriz/friendly-snippets" },
+    dependencies = { "rafamadriz/friendly-snippets", "fang2hou/blink-copilot" },
     version = "1.*",
     opts = {
+        sources = {
+            default = { "lsp", "path", "snippets", "buffer", "copilot" },
+            providers = {
+                copilot = {
+                    name = "Copilot",
+                    module = "blink-copilot",
+                    async = true,
+                    enabled = function() return vim.g.copilot_enabled == true end,
+                },
+            },
+        },
         keymap = {
             preset = "enter",
             -- ["<C-y>"] = { "select_and_accept" },
