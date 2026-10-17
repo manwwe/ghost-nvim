@@ -1,32 +1,44 @@
 -- Configures core Neovim options.
 
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.numberwidth = 3
+vim.g.mapleader = " "       -- Space leader
+vim.g.maplocalleader = "\\" -- Backslash local leader
+vim.g.ai_cmp = true         -- AI completion flag for supporting plugins
 
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
 
-vim.opt.clipboard = "unnamedplus"
-
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.writebackup = false
-vim.opt.undofile = true
-
-vim.opt.cursorline = true
--- vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20,t:block,a:blinkwait0-blinkoff0-blinkon0"
-vim.opt.termguicolors = true
-vim.opt.signcolumn = "yes"
-vim.opt.wrap = false
-vim.opt.scrolloff = 8
--- vim.opt.fillchars = { eob = " ", vert = "│" }
-vim.opt.showmode = false
-
-vim.opt.splitright = true
-vim.opt.splitbelow = true
-
-vim.opt.tabstop = 2
-vim.opt.shiftwidth = 2
-vim.opt.expandtab = true
-vim.opt.smartindent = true
+vim.opt.mouse = "a" -- Enable mouse support
+vim.opt.number = true -- Show line numbers
+vim.opt.relativenumber = true -- Relative line numbers
+vim.opt.numberwidth = 3 -- Minimum number column width
+vim.opt.ignorecase = true -- Case-insensitive search
+vim.opt.smartcase = true -- Uppercase enables case sensitivity
+vim.opt.clipboard = "unnamedplus" -- Use system clipboard
+vim.opt.swapfile = false -- Disable swap files
+vim.opt.backup = false -- Disable backups
+vim.opt.writebackup = false -- Disable temporary backups
+vim.opt.undofile = true -- Persistent undo history
+vim.opt.confirm = true -- Prompt before discarding changes
+vim.opt.cursorline = true -- Highlight cursor line
+vim.opt.termguicolors = true -- Enable true colors
+vim.opt.signcolumn = "yes" -- Always show sign column
+vim.opt.wrap = false -- Disable line wrapping
+vim.opt.scrolloff = 8 -- Keep eight context lines
+vim.opt.sidescrolloff = 8 -- Horizontal context
+vim.opt.pumheight = 10 -- Limit completion menu height
+vim.opt.fillchars = { -- UI fill characters
+    foldopen = "", -- Open fold marker
+    foldclose = "", -- Closed fold marker
+    fold = " ", -- Fold line filler
+    foldsep = " ", -- Fold column separator
+    diff = "╱", -- Diff filler
+    eob = " ", -- Hide end-of-buffer tildes
+}
+vim.opt.showmode = true -- Show mode indicator
+vim.opt.splitright = true -- Split to the right
+vim.opt.splitbelow = true -- Split below
+vim.opt.splitkeep = "screen" -- Keep text steady when splitting
+vim.opt.tabstop = 2 -- Two-space tab width
+vim.opt.shiftwidth = 2 -- Two-space indentation
+vim.opt.shiftround = true -- Round indentation to a full level
+vim.opt.expandtab = true -- Use spaces for tabs
+vim.opt.smartindent = true -- Smart auto-indent
+vim.opt.virtualedit = "block" -- Select beyond line endings in block mode

@@ -1,45 +1,26 @@
--- Configures lazy.nvim and plugin loading.
-
-local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
-
-if not vim.loop.fs_stat(lazypath) then
-  vim.fn.system {
+-- Install lazy.nvim on first startup.
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.uv.fs_stat(lazypath) then
+  local output = vim.fn.system({
     "git",
     "clone",
     "--filter=blob:none",
     "--branch=stable",
     "https://github.com/folke/lazy.nvim.git",
     lazypath,
-  }
+  })
+  if vim.v.shell_error ~= 0 then
+    error("Failed to install lazy.nvim:\n" .. output)
+  end
 end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-  { import = "ghost.plugins" },
-  { import = "ghost.plugins.lsp" },
-}, {
-  change_detection = {
-    notify = false,
+  spec = {
+    { import = "ghost.plugins" },
+    { import = "ghost.plugins.lsp" },
+    { import = "ghost.plugins.lang" },
   },
-  install = {
-    colorschema = { "" },
-  },
-  performance = {
-    rtp = {
-      disabled_plugins = {
-        "gzip",
-        "matchit",
-        "matchparen",
-        "netrwPlugin",
-        "tarPlugin",
-        "tohtml",
-        "tutor",
-        "zipPlugin",
-      },
-    },
-  },
-  ui = {
-    border = "rounded",
-    wrap = true,
-  },
+  install = { colorscheme = { "habamax" } },
+  checker = { enabled = true, notify = false },
 })

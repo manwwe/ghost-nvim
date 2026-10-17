@@ -1,5 +1,6 @@
-require "ghost.config.autocmds"
-require "ghost.config.keymaps"
+-- Ghost-nvim entry point
+
 require "ghost.config.options"
+require "ghost.config.keymaps"
+require "ghost.config.autocmd"
 require "ghost.config.lazy"
-require("ghost.config.theme").apply()

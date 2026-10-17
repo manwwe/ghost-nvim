@@ -1,44 +1,106 @@
--- Configures global Neovim keymaps.
+-- This file is automatically loaded by init.lua
 
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
-
+-- Disable space in normal and visual mode
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
-local keymap = require "ghost.utils.keymap"
-local map = keymap.map
-local theme = require "ghost.config.theme"
+-- Helper
+local function map(mode, lhs, rhs, opts)
+    if type(opts) == "string" then
+        opts = { desc = opts }
+    end
+    vim.keymap.set(mode, lhs, rhs, vim.tbl_extend("force", { silent = true }, opts or {}))
+end
 
-theme.setup()
-
+-- Save
 map({ "n", "v" }, "<leader>w", "<cmd>w<CR><cmd>echo 'File Saved! 💾'<CR>", "Save file")
-map("n", "<leader>qq", "<cmd>q<CR>", "Quit window")
-map("n", "<leader>qa", "<cmd>qa<CR>", "Quit all")
 map("n", "<leader>W", "<cmd>noautocmd w<CR>", "Save without formatting")
 
+-- Quit
+map("n", "<leader>qq", "<cmd>q<CR>", "Quit window")
+map("n", "<leader>qa", "<cmd>qa<CR>", "Quit all")
+
+-- Exit insert and terminal modes
 map("i", "jj", "<Esc>", "Exit insert mode")
 map("t", "jj", [[<C-\><C-n>]], "Exit terminal mode")
 
+-- Select all
 map("n", "<leader>sa", "ggVG", "Select entire buffer")
 
-map("n", "H", "g^", "First non-blank char")
-map("n", "L", "g$", "End of line")
+-- Move by screen rows unless a count is given
+map({ "n", "x" }, "j", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+map({ "n", "x" }, "<Down>", "v:count == 0 ? 'gj' : 'j'", { desc = "Down", expr = true, silent = true })
+map({ "n", "x" }, "k", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
+map({ "n", "x" }, "<Up>", "v:count == 0 ? 'gk' : 'k'", { desc = "Up", expr = true, silent = true })
 
+-- Navigate search matches
 map("n", "n", "nzzzv", "Next match (centered)")
 map("n", "N", "Nzzzv", "Previous match (centered)")
 
-map("n", "x", '"_x', "Delete char (no yank)")
+-- Clear search highlighting on escape
+map({ "i", "n", "s" }, "<Esc>", "<cmd>nohlsearch<CR><Esc>", "Escape and clear search highlighting")
 
-map("n", "<Tab>", "<cmd>bnext<CR>", "Next buffer")
-map("n", "<S-Tab>", "<cmd>bprevious<CR>", "Previous buffer")
+-- Location list
+map("n", "<leader>xl", function()
+    local success, err = pcall(vim.fn.getloclist(0, { winid = 0 }).winid ~= 0 and vim.cmd.lclose or vim.cmd.lopen)
+    if not success and err then
+        vim.notify(err, vim.log.levels.ERROR)
+    end
+end, { desc = "Location List" })
+
+-- Quickfix list
+map("n", "<leader>xq", function()
+    local success, err = pcall(vim.fn.getqflist({ winid = 0 }).winid ~= 0 and vim.cmd.cclose or vim.cmd.copen)
+    if not success and err then
+        vim.notify(err, vim.log.levels.ERROR)
+    end
+end, { desc = "Quickfix List" })
+map("n", "[q", vim.cmd.cprev, { desc = "Previous Quickfix" })
+map("n", "]q", vim.cmd.cnext, { desc = "Next Quickfix" })
+
+-- Diagnostics
+local function diagnostic_goto(next, severity)
+    return function()
+        vim.diagnostic.jump({
+            count = (next and 1 or -1) * vim.v.count1,
+            severity = severity and vim.diagnostic.severity[severity] or nil,
+            float = true,
+        })
+    end
+end
+
+map("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+map("n", "]d", diagnostic_goto(true), { desc = "Next Diagnostic" })
+map("n", "[d", diagnostic_goto(false), { desc = "Prev Diagnostic" })
+map("n", "]e", diagnostic_goto(true, "ERROR"), { desc = "Next Error" })
+map("n", "[e", diagnostic_goto(false, "ERROR"), { desc = "Prev Error" })
+map("n", "]w", diagnostic_goto(true, "WARN"), { desc = "Next Warning" })
+map("n", "[w", diagnostic_goto(false, "WARN"), { desc = "Prev Warning" })
+
+-- Keyword lookup
+map("n", "<leader>K", "<cmd>norm! K<cr>", { desc = "Keywordprg" })
+
+-- Commenting
+map("n", "gco", "o<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", "Add Comment Below")
+map("n", "gcO", "O<esc>Vcx<esc><cmd>normal gcc<cr>fxa<bs>", "Add Comment Above")
+
+-- Buffers
+map("n", "<S-h>", "<cmd>bprevious<CR>", "Previous buffer")
+map("n", "<S-l>", "<cmd>bnext<CR>", "Next buffer")
+map("n", "[b", "<cmd>bprevious<CR>", "Previous buffer")
+map("n", "]b", "<cmd>bnext<CR>", "Next buffer")
+map("n", "<leader>bb", "<cmd>edit #<CR>", "Switch to other buffer")
+map("n", "<leader>`", "<cmd>edit #<CR>", "Switch to other buffer")
 map("n", "<leader>bd", "<cmd>bdelete!<CR>", "Close buffer")
+map("n", "<leader>bD", "<cmd>bdelete<CR>", "Delete buffer and window")
 map("n", "<leader>bn", "<cmd>enew<CR>", "New buffer")
 
+-- Splits
 map("n", "<leader>sv", "<C-w>v", "Split vertical")
 map("n", "<leader>sh", "<C-w>s", "Split horizontal")
 map("n", "<leader>se", "<C-w>=", "Equalize splits")
 map("n", "<leader>sx", "<cmd>close<CR>", "Close split")
 
+-- Navigate windows using <ctrl> hjkl keys
 map("n", "<C-h>", "<C-w>h", "Focus left window")
 map("n", "<C-j>", "<C-w>j", "Focus below window")
 map("n", "<C-k>", "<C-w>k", "Focus above window")
@@ -48,18 +110,31 @@ map("t", "<C-j>", [[<C-\><C-n><cmd>wincmd j<CR>]], "Focus below window")
 map("t", "<C-k>", [[<C-\><C-n><cmd>wincmd k<CR>]], "Focus above window")
 map("t", "<C-l>", [[<C-\><C-n><cmd>wincmd l<CR>]], "Focus right window")
 
+-- Resize window using <leader> arrow keys
+map("n", "<leader><Up>", "<cmd>resize +2<cr>", { desc = "Increase Window Height" })
+map("n", "<leader><Down>", "<cmd>resize -2<cr>", { desc = "Decrease Window Height" })
+map("n", "<leader><Left>", "<cmd>vertical resize -2<cr>", { desc = "Decrease Window Width" })
+map("n", "<leader><Right>", "<cmd>vertical resize +2<cr>", { desc = "Increase Window Width" })
+
+-- Adjust indentation and keep the selection
 map("v", "<", "<gv", "Unindent")
 map("v", ">", ">gv", "Indent")
 
-map("n", "<leader>uw", "<cmd>set wrap!<CR>", "Toggle line wrap")
-map("n", "<leader>un", function()
-  vim.opt.relativenumber = not vim.opt.relativenumber:get()
+-- Toggle display options
+map(
+    "n",
+    "<leader>ur",
+    "<Cmd>nohlsearch<Bar>diffupdate<Bar>normal! <C-L><CR>",
+    { desc = "Redraw / Clear hlsearch / Diff Update" }
+)
+map("n", "<localleader>uw", "<cmd>set wrap!<CR>", "Toggle line wrap")
+map("n", "<localleader>un", function()
+    vim.opt.relativenumber = not vim.opt.relativenumber:get()
 end, "Toggle relative numbers")
-map("n", "<leader>ut", function()
-  theme.pick()
-end, "Pick theme")
 
+-- Move selected lines
 map("v", "J", ":m '>+1<CR>gv=gv", "Move line down")
 map("v", "K", ":m '<-2<CR>gv=gv", "Move line up")
 
+-- Paste without overwriting the register
 map("v", "p", '"_dP', "Paste without overwriting register")
