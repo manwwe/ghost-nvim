@@ -2,7 +2,6 @@
 
 vim.g.mapleader = " "       -- Space leader
 vim.g.maplocalleader = "\\" -- Backslash local leader
-vim.g.ai_cmp = true         -- AI completion flag for supporting plugins
 
 
 vim.opt.mouse = "a" -- Enable mouse support

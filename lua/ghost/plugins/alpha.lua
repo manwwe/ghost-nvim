@@ -49,18 +49,9 @@ return {
       dashboard.button("q", "󰩈  Quit Neovim", ":qa<CR>"),
     }
 
-    local function get_current_date()
-      return os.date " Today is %A, %B %d, %Y"
-    end
-
-    local function welcome_user()
-      local username = os.getenv "USER" or os.getenv "USERNAME" or "friend"
-      return string.format("󱠢 Welcome back, %s!", username)
-    end
-
     dashboard.section.footer.val = {
-      welcome_user(),
-      get_current_date(),
+      string.format("󱠢 Welcome back, %s!", os.getenv("USER") or os.getenv("USERNAME") or "friend"),
+      os.date(" Today is %A, %B %d, %Y"),
     }
 
     dashboard.opts.layout = {

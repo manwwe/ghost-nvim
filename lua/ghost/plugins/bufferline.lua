@@ -12,13 +12,6 @@ return {
                     separator = false,
                     highlight = "Directory",
                 },
-                {
-                    filetype = "copilot-chat",
-                    text = " Copilot Chat",
-                    text_align = "center",
-                    separator = false,
-                    highlight = "Directory",
-                },
             },
         },
     },
