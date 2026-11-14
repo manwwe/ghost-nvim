@@ -13,6 +13,12 @@ end
 local specs = {
     c = function(file) return compiled("/opt/homebrew/bin/gcc-16", "c11", file) end,
     cpp = function(file) return compiled("/opt/homebrew/bin/g++-16", "c++20", file) end,
+    rust = function(file)
+        local binary = vim.fn.tempname()
+        local target = vim.fn.shellescape(binary)
+        return string.format("rustc --edition=2021 --crate-name ghost_runner %s -o %s && %s",
+            vim.fn.shellescape(file), target, target), binary
+    end,
     lua = function(file) return "lua " .. vim.fn.shellescape(file) end,
     python = function(file) return "python3 " .. vim.fn.shellescape(file) end,
     sh = function(file) return "bash " .. vim.fn.shellescape(file) end,

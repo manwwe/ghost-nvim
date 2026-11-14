@@ -169,7 +169,9 @@ mini.diff starts disabled. Enable it with `Space gd` before using `Space go`.
 ### Competitive programming
 
 Both runners save modified files and open a floating terminal. Output stays
-visible after the process exits. Supported filetypes: C, C++, Lua, Python, Bash.
+visible after the process exits. Supported filetypes: C, C++, Rust, Lua, Python, Bash.
+Rust runs standalone files with `rustc --edition=2021`; use `cargo run` in a
+terminal for Cargo projects with external dependencies.
 
 - **Space tr:** run immediately and interact with the program normally.
 - **Space tc:** paste the test input, then press **Ctrl+d on an empty line**.
