@@ -162,6 +162,7 @@ if booted then
     assert(not c.completion.list.selection.preselect({}))
     assert(not c.completion.list.selection.auto_insert({}))
     assert(c.keymap["<Tab>"][1] == "accept" and c.keymap["<CR>"][1] == "accept")
+    assert(c.keymap["<C-j>"][1] == "select_next" and c.keymap["<C-k>"][1] == "select_prev")
   end)
 
   test("mini.diff loads before its overlay shortcut is invoked", function()
@@ -193,7 +194,7 @@ if booted then
     })
     vim.lsp.get_client_by_id = get_client
     assert(ok, err)
-    local mapping = vim.fn.maparg("<C-k>", "i", false, true)
+    local mapping = vim.fn.maparg("gK", "n", false, true)
     assert(mapping.buffer == 1 and mapping.callback == vim.lsp.buf.signature_help)
     assert(vim.fn.maparg("gd", "n", false, true).buffer == 1)
   end)

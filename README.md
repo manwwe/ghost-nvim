@@ -160,7 +160,7 @@ to browse the groups in which-key. The sequences below start with Space.
 | `xq` / `xl` | Quickfix / location list |
 | `qq` | Quit all |
 
-`Ctrl+n/p` navigates completion suggestions. Tab and Enter accept an explicitly
+`Ctrl+j/k` navigates completion suggestions. Tab and Enter accept an explicitly
 selected suggestion. `jj` leaves Insert mode or terminal input mode.
 `Ctrl+/` (or `Ctrl+_`, depending on the terminal) toggles the bottom terminal.
 
@@ -184,7 +184,7 @@ Copilot is **disabled at every startup**. Enable it with **Space ua**, then run
 required. The server may download on first activation.
 
 Suggestions appear inside **Blink's menu**, alongside normal completion sources.
-Inline ghost text is disabled. Use the same Ctrl+n/p and Tab/Enter workflow.
+Inline ghost text is disabled. Use the same Ctrl+j/k and Tab/Enter workflow.
 Press Space ua again to disable Copilot.
 
 ## Make it yours
