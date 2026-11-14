@@ -205,7 +205,9 @@ beside their plugin specs. Nordic is the active startup theme; its colors are
 configured in `plugins/theme/nordic.lua`.
 
 Code snapshots are saved to `~/Pictures/CodeSnap/`. They are not written into
-the current project.
+the current project. Snapshots use the bundled `ghost-gruvbox` theme with a plain
+dark background and line numbers, without a watermark, filename, or window decorations.
+Edit `assets/codesnap/ghost-gruvbox.tmTheme` to customize their syntax colors.
 
 ## Tests
 

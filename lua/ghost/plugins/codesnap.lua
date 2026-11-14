@@ -1,3 +1,6 @@
+local source = debug.getinfo(1, "S").source:sub(2)
+local root = vim.fn.fnamemodify(vim.uv.fs_realpath(source) or source, ":p:h:h:h:h")
+
 return {
     "mistricky/codesnap.nvim",
     tag = "v2.0.5",
@@ -22,7 +25,27 @@ return {
             desc = "Save code snapshot",
         },
     },
-    opts = {},
+    opts = {
+        show_line_number = true,
+        show_workspace = false,
+        snapshot_config = {
+            theme = "ghost-gruvbox",
+            themes_folders = { root .. "/assets/codesnap" },
+            background = "#282828",
+            line_number_color = "#928374",
+            window = {
+                mac_window_bar = false,
+                margin = { x = 0, y = 0 },
+                shadow = { radius = 0, color = "#00000000" },
+                border = { width = 0, color = "#00000000" },
+                radius = 0,
+            },
+            code_config = {
+                breadcrumbs = { enable = false },
+            },
+            watermark = { content = "" },
+        },
+    },
     config = function(_, opts)
         -- CodeSnap adds a literal library path; don't leak it to other plugins.
         local cpath = package.cpath
