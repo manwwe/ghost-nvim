@@ -51,7 +51,7 @@ return {
         map("n", "<leader>cr", vim.lsp.buf.rename, "Rename symbol")
 
         if client:supports_method("textDocument/inlayHint", event.buf) then
-          vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+          vim.lsp.inlay_hint.enable(false, { bufnr = event.buf })
         end
       end,
     })

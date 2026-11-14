@@ -8,7 +8,11 @@ return {
     opts = {
       servers = {
         clangd = {
-          cmd = { "clangd", "--query-driver=/opt/homebrew/bin/g++-16,/opt/homebrew/bin/gcc-16" },
+          cmd = {
+            "clangd",
+            "--query-driver=/opt/homebrew/bin/g++-16,/opt/homebrew/bin/gcc-16",
+            "--header-insertion=never",
+          },
           on_init = function(client)
             client.server_capabilities.inlayHintProvider = false -- Disable clangd inlay hints
           end,
