@@ -41,7 +41,7 @@ return {
         terminal = {},
         lazygit = { enabled = true },
         bigfile = { enabled = true },
-        explorer = { enabled = true },
+        explorer = { enabled = false }, -- se usa neo-tree
         image = { enabled = true },
         input = { enabled = true },
         notifier = { enabled = true },
